@@ -28,7 +28,7 @@ const config: Config = {
       fontFamily: {
         serif: ['var(--font-playfair)', 'Georgia', 'serif'],
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
-        display: ['var(--font-cormorant)', 'Georgia', 'serif'],
+        display: ['var(--font-playfair)', 'Georgia', 'serif'],
       },
       letterSpacing: {
         label: '0.175em',
@@ -39,15 +39,6 @@ const config: Config = {
       },
       transitionTimingFunction: {
         outExpo: 'cubic-bezier(0.16, 1, 0.3, 1)',
-      },
-      keyframes: {
-        'testimonials-marquee': {
-          '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-50%)' },
-        },
-      },
-      animation: {
-        'testimonials-marquee': 'testimonials-marquee 42s linear infinite',
       },
     },
   },

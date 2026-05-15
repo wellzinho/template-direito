@@ -44,7 +44,7 @@ const items = [
 type Item = (typeof items)[number]
 
 const cardClassName =
-  'flex min-h-[280px] w-[min(88vw,360px)] shrink-0 flex-col gap-4 rounded-[2px] border-l-2 border-gold bg-ink-quote px-4 pb-12 pt-10 md:min-h-0 md:w-auto md:px-[18px] md:pb-14 md:pt-12'
+  'flex min-h-[280px] w-[min(78vw,320px)] shrink-0 flex-col gap-4 rounded-[2px] border-l-2 border-gold bg-ink-quote px-4 pb-12 pt-10 md:min-h-0 md:w-auto md:px-[18px] md:pb-14 md:pt-12'
 
 function TestimonialInner({ t }: { t: Item }) {
   return (
@@ -84,8 +84,6 @@ export function TestimonialsSection() {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { amount: 0.15, once: true })
 
-  const loop = [...items, ...items] as Item[]
-
   return (
     <section ref={ref} className="bg-ink px-4 pb-8 pt-16 md:pb-12 md:pt-16">
       <div className="mx-auto flex max-w-[1280px] flex-col gap-10 md:gap-16">
@@ -107,48 +105,33 @@ export function TestimonialsSection() {
           </motion.h2>
         </div>
 
-        {/* Mobile: carrossel infinito (motion-safe) ou rolagem horizontal (reduced motion) */}
-        <div className="-mx-4 md:hidden">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-            className="hidden gap-6 overflow-x-auto overflow-y-hidden px-4 pb-2 motion-reduce:flex snap-x snap-mandatory [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        {/* Mobile: rolagem horizontal com prévia do próximo card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          className="relative -mx-4 py-1 md:hidden"
+        >
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-ink via-ink/80 to-transparent"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-ink via-ink/70 to-transparent"
+          />
+          <div
             tabIndex={0}
             aria-label="Depoimentos de clientes"
+            className="flex snap-x snap-mandatory gap-6 overflow-x-auto overflow-y-hidden scroll-smooth px-4 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
             {items.map((t) => (
               <article key={t.name.join('-')} className={`${cardClassName} snap-center`}>
                 <TestimonialInner t={t} />
               </article>
             ))}
-          </motion.div>
-
-          <div className="motion-reduce:hidden group/marquee relative overflow-hidden py-1">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-ink to-transparent"
-            />
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-ink to-transparent"
-            />
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
-              transition={{ duration: 0.6 }}
-              className="overflow-hidden"
-            >
-              <div className="flex w-max gap-6 pl-4 pr-4 group-hover/marquee:[animation-play-state:paused] motion-safe:animate-testimonials-marquee">
-                {loop.map((t, i) => (
-                  <article key={`${t.name.join('-')}-${i}`} className={cardClassName}>
-                    <TestimonialInner t={t} />
-                  </article>
-                ))}
-              </div>
-            </motion.div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Desktop: grade */}
         <div className="hidden grid-cols-3 gap-6 md:grid">

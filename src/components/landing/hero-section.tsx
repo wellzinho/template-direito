@@ -2,19 +2,21 @@
 
 import Image from 'next/image'
 import { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import { figmaAssets } from '@/lib/figma-assets'
 import { MagneticButton } from '@/components/landing/magnetic-button'
 import { RevealText } from '@/components/landing/reveal-text'
+import { motionEase } from '@/lib/motion'
 
 export function HeroSection() {
   const ref = useRef<HTMLElement>(null)
+  const reducedMotion = useReducedMotion()
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start start', 'end start'],
   })
-  const imgScale = useTransform(scrollYProgress, [0, 1], [1, 1.07])
-  const imgY = useTransform(scrollYProgress, [0, 1], ['0%', '12%'])
+  const imgScale = useTransform(scrollYProgress, [0, 1], reducedMotion ? [1, 1] : [1, 1.07])
+  const imgY = useTransform(scrollYProgress, [0, 1], reducedMotion ? ['0%', '0%'] : ['0%', '12%'])
   const streakOpacity = useTransform(scrollYProgress, [0, 0.6], [0.55, 0.2])
   const streakX = useTransform(scrollYProgress, [0, 1], ['-20%', '10%'])
 
@@ -42,15 +44,14 @@ export function HeroSection() {
         style={{ opacity: streakOpacity, x: streakX }}
       />
 
-      {/* Figma: gap ~7px entre rótulo, título e CTA; px 16; título 56px / leading 70.4 no frame 700px */}
       <div className="relative z-10 mx-auto flex w-full max-w-[1280px] flex-col gap-[7px]">
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, ease: motionEase }}
           className="font-display text-sm font-semibold uppercase tracking-[0.2em] text-gold"
         >
-          Advocacia estratégica
+          Advocacia
         </motion.p>
 
         <h1 className="w-full font-serif text-[clamp(2.125rem,9.2vw,3.5rem)] font-bold leading-[1.22] tracking-[-0.02em] text-marble md:max-w-none md:text-[56px] md:leading-[70px] md:tracking-[-0.018em]">
@@ -63,7 +64,7 @@ export function HeroSection() {
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35, duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ delay: 0.35, duration: 0.85, ease: motionEase }}
           className="pt-4 md:pt-[17px]"
         >
           <MagneticButton

@@ -1,16 +1,43 @@
-'use client'
-
+import dynamic from 'next/dynamic'
 import { AboutSection } from '@/components/landing/about-section'
-import { FaqSection } from '@/components/landing/faq-section'
-import { FinalCta } from '@/components/landing/final-cta'
 import { HeroSection } from '@/components/landing/hero-section'
-import { MethodologySection } from '@/components/landing/methodology-section'
 import { PracticeAreas } from '@/components/landing/practice-areas'
 import { SiteFooter } from '@/components/landing/site-footer'
 import { SiteHeader } from '@/components/landing/site-header'
 import { StatsStrip } from '@/components/landing/stats-strip'
-import { TestimonialsSection } from '@/components/landing/testimonials-section'
 import { SiteViewportProgressiveBlur } from '@/components/ui/site-viewport-progressive-blur'
+
+const TestimonialsSection = dynamic(
+  () =>
+    import('@/components/landing/testimonials-section').then((m) => ({
+      default: m.TestimonialsSection,
+    })),
+  { loading: () => <section className="min-h-[480px] bg-ink" aria-hidden /> },
+)
+
+const MethodologySection = dynamic(
+  () =>
+    import('@/components/landing/methodology-section').then((m) => ({
+      default: m.MethodologySection,
+    })),
+  { loading: () => <section className="min-h-[520px] bg-ink-panel" aria-hidden /> },
+)
+
+const FaqSection = dynamic(
+  () =>
+    import('@/components/landing/faq-section').then((m) => ({
+      default: m.FaqSection,
+    })),
+  { loading: () => <section className="min-h-[400px] bg-ink" aria-hidden /> },
+)
+
+const FinalCta = dynamic(
+  () =>
+    import('@/components/landing/final-cta').then((m) => ({
+      default: m.FinalCta,
+    })),
+  { loading: () => <section className="min-h-[280px] bg-ink" aria-hidden /> },
+)
 
 export function LandingPage() {
   return (
