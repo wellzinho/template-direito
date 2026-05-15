@@ -6,6 +6,7 @@ import { useRef } from 'react'
 import { figmaAssets } from '@/lib/figma-assets'
 import { IconQuote } from '@/components/landing/icons'
 import { MagneticButton } from '@/components/landing/magnetic-button'
+import { TestimonialsMobileScroll } from '@/components/landing/testimonials-mobile-scroll'
 
 const items = [
   {
@@ -120,17 +121,13 @@ export function TestimonialsSection() {
             aria-hidden
             className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-ink via-ink/70 to-transparent"
           />
-          <div
-            tabIndex={0}
-            aria-label="Depoimentos de clientes"
-            className="flex snap-x snap-mandatory gap-6 overflow-x-auto overflow-y-hidden scroll-smooth px-4 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          >
+          <TestimonialsMobileScroll aria-label="Depoimentos de clientes">
             {items.map((t) => (
               <article key={t.name.join('-')} className={`${cardClassName} snap-center`}>
                 <TestimonialInner t={t} />
               </article>
             ))}
-          </div>
+          </TestimonialsMobileScroll>
         </motion.div>
 
         {/* Desktop: grade */}

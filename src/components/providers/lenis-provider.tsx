@@ -22,6 +22,13 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
       wheelMultiplier: 0.88,
       touchMultiplier: 1.05,
       syncTouch: true,
+      prevent: (node) => Boolean(node.closest('[data-lenis-prevent]')),
+      virtualScroll: (data) => {
+        const target = data.event.target
+        if (!(target instanceof Element)) return true
+        if (!target.closest('[data-lenis-prevent]')) return true
+        return Math.abs(data.deltaY) > Math.abs(data.deltaX)
+      },
     })
 
     document.documentElement.classList.add('lenis')
